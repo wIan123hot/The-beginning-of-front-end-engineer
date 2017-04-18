@@ -1,0 +1,94 @@
+function getByClass(clasname,parent){
+    var oparen=parent?document.getElementById(parent):document,
+        arr=[],
+        eles=parent.getElementsByTagName("*");
+    for(var i=0;i<eles.length;i++){
+        if(eles[i]==clasname){
+            arr.push(eles[i]);
+        }
+    }
+    return arr;
+}
+window.onload=drag;
+
+function drag(){
+    var oTitle=document.getElementByClass("login_logo_webqq","logiPanel");
+    oTitle.onmousedown=fnDown;
+    var oClose=document.getElementById('ui_boxyClose');
+    oClose.onclick=function(){
+        document.getElementById("loginPanel").style.display=none;
+    };
+    var loginState=document.getElementById('loginstate'),
+         stateList=document.getElementById('loginstatePanel'),
+         lis=stateList.getElementByTagName('li'),
+        statesTxt=document.getElementById('login2qq_state_txt');
+    loginState.onclick=function(e){
+        stateList.style.display='block';
+        e=e||window.event;
+        if(e.stopPropagation){
+            e.stopPropagation();
+        }else {
+            e.cancelBubble=true;
+        }
+    };
+    for (var i=0;i<lis.length;i++){
+        lis[i].onmouseover=function(){
+            this.style.background='#567';
+        };
+        lis[i].onmouseout=function(){
+          this.style.background='#fff';  
+        };
+        lis[i].onclick=function(e){
+            e=e||window.event;
+            if(e.stopPropagation){
+                e.stopPropagation();
+            }else {
+                e.cancelBubble=true;
+            }
+          var id=this.id;
+            loginList.style.display='none';
+            stateTxt.innerHTML=getByClass('stateSelected',id)[0].innerHTML;
+            loginStateshow.ClassName='';
+            loginStateshow.ClassName="login-atate-show "+id;
+            
+        }
+    }
+    dociment.onclick=function(){
+        stateList.style.display='none';
+    }
+    
+}
+function fnDown(event){
+    event=event||window.event;
+    var oDrag=document.getElementById('loginPanel'),
+        disX=event.clientX-oDrag.offsetLeft,
+        disY=event.clientY-oDrag.offsetHeight;
+    document.onmousemove=function(event){
+        event=event||window.event;
+        fnMove(event,disX,disY)
+    };
+    document.onmouseup=function(){
+        document.onmousemove=null;
+        document.onmouseup=null;
+    }
+}
+function fnMove(e,posX,posY){
+    var l=e.clientX-posX,
+        t=e.clientY-posY,
+        winW=document.documentElement.clientWidth||document.body.clientWidth,
+        winH=document.documentElement.clientHeight||document.body.clientHeight,
+        maxW=winW-oDrag.offsetWidth-10,
+        maxH=winH-oDrag.offsetHeight;
+    if(l<0){
+        l=0;
+    }else if(l>maxW) {
+        l=maxW;
+    }
+    if(t<0){
+        t=10;
+    }else if(t>maxH) {
+        t=maxH;
+    }
+    oDrag.style.left=l+'px';
+    oDrag.style.top=t+'px';
+}
