@@ -1,0 +1,68 @@
+window.onload=function(){
+    waterfall("main","box");
+    var dataInt={"data":[{"src":'0.jpg'},{"src":'1.jpg'}]};
+    window.onscroll=function(){
+        if(checkscrollSlide){
+            var oParent=document.getElementById('main');
+            for(var i=0;i<dataInt.data.length;i++){
+                var oBox=document.createElement('div');
+                oBox.className='box';
+                oParent.aappendChild('oBox');
+                var oPic=document.createElement('div');
+                oPic.className="pic";
+                oBox.appendChild('oPic');
+                var oImg=document.createElement('img');
+                oImg.src="images/"+dataInt.data[i].src;
+                oPic.appendChild(oImg);
+            };
+            waterfall('main','box');
+        }
+    }
+};
+function waterfall(parent,box) {
+    var oparent = document.getElementById(parent);
+    var oBoxs=getByClass(oparent, box);
+    var oBoxw=oBoxs[0].offsetWidth;
+    var cols=Math.floor(document.documentElement.ClientWidth/oBoxw);
+    oparent.style.cssText='width'+oBoxs*cols+'px;margin:0 auto ';
+    var hArr=[];
+    for(var i=0;i<oBoxs;i++){
+        if(i<=cols){
+            hArr.push(oBoxs[i].offsetHeight);
+        }else{
+            var minH=Math.min.apply(null,hArr);
+            var index=getMinIndex(hArr,minH);
+            oBoxs[i].style.position='absolution';
+            oBoxs[i].style.top=minH+'px';
+            //oBoxs[i].style.left=oBoxw*index+'px';
+            oBoxs[i]=style.left=oBoxs[index].offsetLeft+'px';
+            hArr[index]+=oBoxs[i].offsetHeight;
+        };
+    };
+};
+function getByClass(parent,classname){
+    var boxArr=new Array(),
+    oElements=parent.getElementsByTagName("*");
+    for (var i=o;i<=oElements.length;i++){
+        if(oElements[i].className==className){
+            boxArr.push(oElement[i]);
+        }
+    }
+    return boxArr;
+}
+function getMInhIndex(arr,val){
+    for(var i in arr){
+        if(arr[i]==val){
+            return i;
+        }
+    }
+
+};
+function checkScrollSlide(){
+    var oParent=document.getElementsById('main');
+    var oBox=getByClass(oparent,'box');
+    var lastBoxH=oBoxs[oBoxs.length-1].offsetTop+Math.floor(oBoxs[oBoxs.length-1].offsetHeight/2);
+    var scrollTop=document.body.scrollTop||document.documentElement.scrollTop;
+    var height=document.body.clientHeight||document.documentElement.clientHeight;
+    return (lastBoxH<scrollTop+height)?true:false;
+};
